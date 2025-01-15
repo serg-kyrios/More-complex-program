@@ -1,24 +1,41 @@
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, color } from 'react-native';
+import { useLayoutEffect } from 'react';
 
+import IconButton from '../components/IconButton';
 import List from '../components/MealDetail/List';
 import { MEALS } from '../data/dummy-data';
 import MealDetails from '../components/MealDetails';
 import Subtitle from '../components/MealDetail/Subtitle';
 
-function MealDetailScreen({ route }) {
+function MealDetailScreen({ route, navigation }) {
     const mealId = route.params.mealId;
 
-    const selectedMeal = MEALS.find((meal) => meal.id === mealId);
-    console.log('Route Params:', route);
-
-    if (!selectedMeal) {
-        return (
-            <View style={styles.screen}>
-                <Text>Meal not found!</Text>
-            </View>
-        );
+    function headerButtonPressHandler() {
+        //console.log('Pressed!');
     }
-    console.log(selectedMeal);
+
+    const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+    //console.log('Route Params:', route);
+    // useLayoutEffect(() => {
+    //     navigation.setOptions({ title: selectedMeal.title });
+    // }, [navigation, selectedMeal.title]);
+    // console.log(selectedMeal);
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => {
+                return (
+                    <IconButton
+                        // icon='star'
+                        icon='star-outline'
+                        color='white'
+                        onPress={headerButtonPressHandler}
+                    />
+                );
+            },
+        });
+    }, [navigation, headerButtonPressHandler]);
+    //
+
     return (
         <ScrollView style={styles.rootContainer}>
             <Image

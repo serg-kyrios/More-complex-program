@@ -1,4 +1,5 @@
 import {
+    id,
     View,
     Text,
     Pressable,
@@ -6,16 +7,28 @@ import {
     Image,
     Platform,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import MealDetails from './MealDetails';
 
 function MealItem({ title, imageUrl, duration, complexity, affordability }) {
+    const navigation = useNavigation();
+
+    function selectMealItemHandler() {
+        console.log('Meal ID:', id);
+        navigation.navigate('MealDetail', {
+            mealId: 'm1',
+        });
+    }
+
     return (
         <View style={styles.container}>
             <Pressable
                 android_ripple={{ color: '#ccc' }}
-                style={({ pressed }) => [
-                    styles.button,
-                    pressed ? styles.buttonPressed : null,
-                ]}
+                style={({ pressed }) => (
+                    styles.button, pressed ? styles.buttonPressed : null
+                )}
+                onPress={selectMealItemHandler}
             >
                 <View style={styles.innerContainer}>
                     <View>
@@ -25,15 +38,11 @@ function MealItem({ title, imageUrl, duration, complexity, affordability }) {
                         />
                         <Text style={styles.title}>{title}</Text>
                     </View>
-                    <View style={styles.details}>
-                        <Text style={styles.detailItem}>{duration}</Text>
-                        <Text style={styles.detailItem}>
-                            {complexity.toUpperCase()}
-                        </Text>
-                        <Text style={styles.detailItem}>
-                            {affordability.toUpperCase()}
-                        </Text>
-                    </View>
+                    <MealDetails
+                        duration={duration}
+                        affordability={affordability}
+                        complexity={complexity}
+                    />
                 </View>
             </Pressable>
         </View>
@@ -67,16 +76,6 @@ const styles = StyleSheet.create({
     innerContainer: {
         borderRadius: 8,
         overflow: 'hidden', //Rounding corners on iOS
-    },
-    details: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 8,
-    },
-    detailItem: {
-        marginHorizontal: 4,
-        fontSize: 12,
     },
     buttonPressed: {
         opacity: 0.5,

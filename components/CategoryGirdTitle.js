@@ -1,5 +1,4 @@
 import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
-import { CATEGORIES } from '../data/dummy-data';
 
 function CategoryGirdTitle(title, color, onPress, navigation) {
     return (
